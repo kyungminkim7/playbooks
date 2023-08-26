@@ -1,0 +1,22 @@
+---
+- name: Download key
+  become: true
+  get_url:
+    url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+    dest: /usr/share/keyrings/jenkins-keyring.asc
+
+- name: Add apt source list
+  become: true
+  copy:
+    src: jenkins.list
+    dest: /etc/apt/sources.list.d/jenkins.list
+
+- name: Install apt packages
+  become: true
+  apt:
+    update_cache: true
+    cache_valid_time: 3600
+    pkg:
+      - git
+      - openjdk-17-jre
+      - jenkins
